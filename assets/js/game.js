@@ -5,9 +5,15 @@ var playerAttack = 10;
 //you can log multiple values at once like this:
 console.log(playerName, playerAttack, playerHealth);
 
-var enemyName = "Roborto";
+var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
 var enemyHealth = 50;
 var enemyAttack = 12;
+
+for (var i=0; i < enemyNames.length; i++){
+    console.log(enemyNames[i]);
+    console.log(i);
+    console.log(enemyNames[i] + " is at " + i + " index.");
+}
 
 var playerMoney = 10;
 
@@ -19,7 +25,7 @@ var fight = function() {
     if (promptFight === "fight" || promptFight === "FIGHT"){
     //alert players that they're starting the round.
     window.alert("Welcome to Robooooot Glaaaadiatooorrs!");
-    
+
     //subtract value of playerAttach from value of enemyHealth, then use that value to update the enemy health
     enemyHealth = enemyHealth - playerAttack;
 
@@ -68,4 +74,4 @@ var fight = function() {
 };
 
 //execute function:
-fight();
+//fight();
