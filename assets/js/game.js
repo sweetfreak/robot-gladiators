@@ -17,18 +17,20 @@ var fight = function(enemyName) {
     if (promptFight === "skip" || promptFight === "SKIP"){
         //confirm the player wants to skip
         var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
         //if yes, (true), leave fight
         if (confirmSkip){
             window.alert(playerName + " has chosen to skip the fight! Coward!");
             //subtract money for skipping
-            playerMoney = playerMoney - 10;
+            playerMoney = Math.max(0, playerMoney - 10);
             console.log ("playermoney", playerMoney);
             break;
-        } 
+        }   
     }
+
+        //calculate damge done by player 
+        var damage = randomNumber(playerAttack-3, playerAttack);
         //subtract value of playerAttach from value of enemyHealth, then use that value to update the enemy health
-        enemyHealth = enemyHealth - playerAttack;
+        enemyHealth = Math.max(0, enemyHealth - damage);
         // log a resulting message to the console so we know it worked
         console.log(playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining.");
         //check enemy's health
@@ -38,9 +40,9 @@ var fight = function(enemyName) {
         } else {
             window.alert(enemyName + " still has " + enemyHealth + " health left.");
         }
-    
+        var damage = randomNumber(enemyAttack-3, enemyAttack);
         //subtract enemyAttack from playerHea`lth and assign new value to playerHealth
-        playerHealth = playerHealth - enemyAttack;
+        playerHealth = Math.max(0, playerHealth - damage);
         //log a resulting message to the console so we know that it worked.
         console.log(enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining.");
 
@@ -101,7 +103,6 @@ var shop = function() {
             } else {
                 window.alert("You don't have enough money, ya dingus!");
             }
-            
             break;
 
         case "leave":
@@ -131,8 +132,8 @@ var startGame = function () {
             window.alert("Welcome to Robooooot Glaaaadiatooorrs! Round " + (i + 1) + "... BEGIN!");
     
             var pickedEnemyName = enemyNames[i];
-            //reset enemy health
-            enemyHealth = 50;
+            //reset enemy health - gives a minimum health of 40 and a max of 60.
+            enemyHealth = randomNumber(40, 60);
 
             //debugger;
 
@@ -158,10 +159,13 @@ var startGame = function () {
     //play again
     startGame();
 }
+
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    return value;
+}
    
-
 startGame();
-
-
 
 
