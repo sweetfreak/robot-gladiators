@@ -26,12 +26,20 @@ return false;
 }
 
 var fight = function(enemy) {
+    //keep track of who goes first
+    var isPlayerTurn = true;
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    }
 
+    //randomly change turn order
     while (playerInfo.health > 0 && enemy.health > 0){
+        if (isPlayerTurn) {
         //ask player if they want to fight or skip
-        if (fightOrSkip()) {
-            break;
-        };
+            if (fightOrSkip()) {
+                break;
+            };
+        }
 
         //calculate damge done by player 
         var damage = randomNumber(playerInfo.attack-3, playerInfo.attack);
@@ -60,13 +68,31 @@ var fight = function(enemy) {
             window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
         }
     } 
-
+    //switch turn order for next round
+    isPlayerTurn = !isPlayerTurn;
 }
-    //alert players that they're starting the round.
-        // window.alert("Welcome to Robooooot Glaaaadiatooorrs!");
-//execute function:
+   
 var endGame = function() {
+    window.alert("The game is over - let's see how you did.");
+
+    //check local storage for high schore, if it's not there, use 0
+    var highScore = localStorage.getItem("highScore");
+    if (highScore === null) {
+        highScore = 0;
+    }
+    //if player has more moeny than high score, player has new high score
+    if (playerInfo.money > highScore) {
+        localStorage.setItem("highScore", playerInfo.money);
+        localStorage.setItem("name", playerInfo.name);
+
+        alert(playerInfo.name + " now has the high score of " + playerInfo.money + "!");
+    } else {
+        alert(playerInfo.name + " did not beat the high score of " + highScore + "!");
+    }
+
     var playAgainConfirm =  window.confirm("Wanna go another round?");
+
+
 
     if (playAgainConfirm) {
         //restart game
@@ -81,24 +107,23 @@ var endGame = function() {
     window.alert("You've lose your robot in battle. Pour one out for em.");
 }
 
+
+
 var shop = function() {
     //ask player what they want to do
-    var shopOptionPrompt = window.prompt ( "Choose one: REFILL your health, UPGRADE your attack, or LEAVE the shop. Enter REFILL, UPGRADE, or LEAVE to proceed.")
-
+    var shopOptionPrompt = window.prompt ( "Choose one: REFILL your health, UPGRADE your attack, or LEAVE the shop. Enter 1 to refill, 2 to upgrade, or 3 to leave and proceed.")
+    shopOptionPrompt = parseInt(shopOptionPrompt);
     //use a SWITCH to carry out an action:
     switch (shopOptionPrompt) {
-        case "refill":
-        case "REFILL":
+        case 1:
             playerInfo.refillHealth();
             break;
         
-        case "upgrade":
-        case "UPGRADE":    
+        case 2:   
             playerInfo.upgradeAttack();
             break;
 
-        case "leave":
-        case "LEAVE":
+        case 3:
             window.alert("You and " + playerInfo.name + " left the store.")
             //do nothing, so the function ends
             break;
